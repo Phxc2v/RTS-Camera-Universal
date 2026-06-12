@@ -52,10 +52,18 @@
 
 ## Установка
 
+> ⚠️ **Сначала разблокируй архив.** Windows блокирует DLL, скачанные из интернета — если просто распаковать zip, игра покажет `Cannot load … RTSCameraUniversal.Loader.dll`, и мод не запустится. Перед распаковкой: **правый клик по скачанному `.zip` → Свойства → галка «Разблокировать» (Unblock) → ОК**, и *только потом* распаковывай.
+
 1. Установи **Bannerlord.Harmony**.
-2. Скопируй папку `RTSCameraUniversal` в папку `Modules` игры:
+2. **Разблокируй** скачанный `.zip` (правый клик → Свойства → **«Разблокировать»** → ОК), затем распакуй.
+3. Скопируй папку `RTSCameraUniversal` в папку `Modules` игры:
    `...\Mount & Blade II Bannerlord\Modules\`
-3. В лаунчере включи **Bannerlord.Harmony**, нативные модули, свой оверхол (напр. TOR) и в конце — **RTS Camera Universal** (грузить после оверхола).
+4. В лаунчере включи **Bannerlord.Harmony**, нативные модули, свой оверхол (напр. TOR) и в конце — **RTS Camera Universal** (грузить после оверхола).
+
+> 💡 Уже распаковал и ловишь **«Cannot load … Loader.dll»**? Разблокируй установленные файлы — открой PowerShell и выполни:
+> ```powershell
+> Get-ChildItem -Recurse "<путь>\Modules\RTSCameraUniversal" | Unblock-File
+> ```
 
 ### Какой Harmony ставить (зависит от версии игры)
 

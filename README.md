@@ -52,10 +52,18 @@ This is a port/compilation of lzh's open‑source mods (MIT). Here is what it ad
 
 ## Installation
 
+> ⚠️ **Unblock the archive first.** Windows blocks DLLs downloaded from the internet, so if you just extract the zip the game shows `Cannot load … RTSCameraUniversal.Loader.dll` and the mod won't start. Before extracting: **right‑click the downloaded `.zip` → Properties → tick “Unblock” → OK**, *then* extract.
+
 1. Install **Bannerlord.Harmony**.
-2. Copy the `RTSCameraUniversal` folder into your game's `Modules` folder:
+2. **Unblock** the downloaded `.zip` (right‑click → Properties → **Unblock** → OK), then extract it.
+3. Copy the `RTSCameraUniversal` folder into your game's `Modules` folder:
    `...\Mount & Blade II Bannerlord\Modules\`
-3. In the launcher, enable **Bannerlord.Harmony**, the native modules, your overhaul (e.g. TOR), and finally **RTS Camera Universal** (load it after the overhaul).
+4. In the launcher, enable **Bannerlord.Harmony**, the native modules, your overhaul (e.g. TOR), and finally **RTS Camera Universal** (load it after the overhaul).
+
+> 💡 Already extracted and getting **“Cannot load … Loader.dll”**? Unblock the installed files instead — open PowerShell and run:
+> ```powershell
+> Get-ChildItem -Recurse "<path>\Modules\RTSCameraUniversal" | Unblock-File
+> ```
 
 ### Which Harmony to install (depends on your game version)
 
