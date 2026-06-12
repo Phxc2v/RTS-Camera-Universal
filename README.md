@@ -19,7 +19,7 @@ One folder, **one checkbox in the launcher**, shared libraries de‑duplicated. 
 ## Features
 
 - Free camera toggle (default **F10**); WASD + mouse to fly; configurable speed/height.
-- Take control of a soldier after your hero is injured (default **E** to focus/control).
+- Take control of a soldier after your hero is injured: press **;** to enter soldier‑select mode, pick a soldier with the mouse, then **E** to take control.
 - Battle time control: **pause**, **slow motion**, **fast forward** *(hotkeys unbound by default — assign them in the in‑battle menu)*.
 - In‑battle hotkey re‑binding with **conflict protection** — a key already used by another action cannot be assigned twice.
 - Formation commanding: move/charge/advance/fallback, formations (line, shield wall, circle, square, …), facing, volley/auto‑volley, **order queue** with on‑ground visual preview.
@@ -34,12 +34,14 @@ One folder, **one checkbox in the launcher**, shared libraries de‑duplicated. 
 
 This is a port/compilation of lzh's open‑source mods (MIT). Here is what it adds **over the originals**:
 
-- **🎯 One mod for every game version — Bannerlord 1.2.x, 1.3.15 and 1.4.5.** The originals are version‑specific (you hunt for the matching re‑upload). This build detects your game version at launch and loads the right code + assets automatically — the Battle Mini Map included on all three.
+- **🎯 One mod for every game version — Bannerlord 1.2.x, 1.3.15 and 1.4.5.** The originals are version‑specific (you hunt for the matching re‑upload). This build detects your game version at launch and loads the right code + assets automatically — the Battle Mini Map included on all three. A single download is one byte‑identical folder; there are no per‑version installs.
 - **🧩 All‑in‑one, one launcher entry.** RTS Camera + Command System + Battle Mini Map merged into a single module with shared libraries de‑duplicated — the originals are separate downloads.
 - **🌍 Better localization.** The originals shipped English, 中文 and Français but **no Russian** — this build adds a full **Русский** translation (367 strings) and also **improves the French** (corrected phrasing + the new dialogs translated).
-- **🧙 The Old Realms (Warhammer) crash fixes.** Fixed the **magic‑cast crash** (casting under RTS‑camera control routed into TOR's AI cast path → `NullReferenceException`, crashing the battle, notably on battle end), and the **per‑frame crash spam** from TOR's custom Artillery formation index (`ArgumentOutOfRange`).
+- **🧙 The Old Realms (Warhammer) crash fixes.** Fixed the **magic‑cast crash** (casting under RTS‑camera control routed into TOR's AI cast path → `NullReferenceException`, crashing the battle, notably on battle end — fixed on every game version), and the **per‑frame crash spam** from TOR's custom Artillery formation index (`ArgumentOutOfRange`).
 - **🐛 Original bugs fixed.** Division‑by‑zero/`NaN` in the ammo‑ratio calc, a broken mouse‑over formation highlight, a camera‑bearing reset bug, minimap texture/config issues, and a wrong‑target‑framework load crash (now built for net472).
-- **🛡️ Crash‑proof across versions.** Every Harmony patch is applied in isolation and logged by name — a patch that a newer game version changed degrades and logs instead of taking the whole mod (or the game) down with it (e.g. on 1.4.5). A code‑audit pass further unified the shared library (removing a 1.2‑only crash in the in‑battle hotkey config), added per‑frame null/disposed guards across the camera, command and minimap paths, and fixed several cross‑battle handler leaks.
+- **🩹 Even a vanilla game crash fixed.** Bannerlord 1.3/1.4 crash the mission when a formation arranged as **Column** is wiped out and later receives reinforcements (the empty column is asked for unit positions). This build guards the column position queries game‑wide, resets an emptied column to Line, and refuses to put an empty formation into column — the crash can't happen with the suite loaded, no matter who issued the order.
+- **🛡️ Crash‑proofing at the engine boundary.** Every position, direction, formation width and mesh the mod feeds into the engine is validated first — an invalid value (e.g. a missed terrain raycast during a drag order) is skipped and logged (`[guard] …`) instead of corrupting native engine state, which is otherwise an uncatchable hard crash. Every Harmony patch is applied in isolation and logged by name, so a patch broken by a newer game version degrades alone (e.g. on 1.4.5). On Bannerlord 1.2 every engine entry point of the suite (~140 mission / agent / UI / order callbacks) additionally runs behind a circuit breaker that disables only the affected feature after repeated errors and re‑arms next mission.
+- **🚦 Plays safe with the originals and trimmed installs.** If the standalone RTS Camera / Command System / Battle Mini Map are enabled alongside the suite, it steps aside and shows a localized notice instead of double‑applying every patch and hotkey. Launcher dependencies on *CustomBattle / StoryMode / Sandbox* are optional — the module also loads on repacks where those native modules are stripped.
 - **🔔 Graceful "no Harmony" handling.** If **Bannerlord.Harmony** isn't enabled, the game **does NOT crash** — at the main menu you get a clear dialog (in your game's language) with **direct download links for your exact game version** (Steam Workshop / Nexus), Cancel and "don't show again" options, plus a hint to put Harmony at the top of the load order.
 
 ## Requirements
@@ -73,23 +75,19 @@ If **Bannerlord.Harmony** is not enabled, entering the mod shows a dialog with a
 |---|---|
 | Toggle free (RTS) camera | **F10** |
 | Move camera | **WASD** + mouse (up/down = jump/crouch keys) |
-| Focus / control a soldier | **E** |
+| Select a soldier (selection mode, pick with the mouse) | **;** |
+| Take control of the selected soldier | **E** |
 | Open the mod menu (settings & hotkeys) | mod "Open Menu" key (configure in‑battle) |
 | Pause / Slow motion / Fast forward | **unbound** — set in the menu |
 | Toggle minimap | set in the Battle Mini Map menu |
 
 In free camera, select a formation and click the ground to move, or click an enemy to attack. Hold the command‑queue key while ordering to queue multiple orders.
 
-### Directing artillery (The Old Realms)
-1. Toggle the RTS camera (F10) and select the **Artillery** formation.
-2. Target an enemy formation (Select‑Target‑for‑Command / attack a formation).
-3. Set the artillery formation to **Fire at Will** — the crews aim and fire at your chosen formation (TOR's own ballistics). **Hold Fire** stops them.
-
 ## Diagnostics
 
 A rolling log is written to:
 `Documents\Mount and Blade II Bannerlord\Configs\RTSCamera\RTSCameraUniversal.log`
-It records mod messages, caught exceptions, and compatibility‑guard status (e.g. TOR artillery / ability‑cast guards).
+It records mod messages, caught exceptions, and compatibility‑guard status (e.g. the TOR ability‑cast guards).
 
 ## Credits & license
 
