@@ -60,6 +60,8 @@ This is a port/compilation of lzh's open‑source mods (MIT). Here is what it ad
    `...\Mount & Blade II Bannerlord\Modules\`
 4. In the launcher, enable **Bannerlord.Harmony**, the native modules, your overhaul (e.g. TOR), and finally **RTS Camera Universal** (load it after the overhaul).
 
+> 🔄 **First launch on Bannerlord 1.3.15 / 1.4.5 — one restart.** The very first launch after installing or updating finishes setting up the assets for your game version and shows a **“Restart Bannerlord”** dialog. Click it, start the game again, and the mod is fully active. This is normal and happens only once (Bannerlord 1.2 needs no restart).
+
 > 💡 Already extracted and getting **“Cannot load … Loader.dll”**? Unblock the installed files instead — open PowerShell and run:
 > ```powershell
 > Get-ChildItem -Recurse "<path>\Modules\RTSCameraUniversal" | Unblock-File
